@@ -1,0 +1,148 @@
+# ┌─────────────────────────────────────────────────────────────┐
+# │                   Python / Django                           │
+# └─────────────────────────────────────────────────────────────┘
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Environments
+.env
+.env*
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django stuff
+*.log
+*.pot
+*.sqlite3
+*.sqlite3-journal
+*.db
+*.db-journal
+# media/
+static/CACHE/
+
+# Sphinx documentation
+docs/_build/
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# IDEs & editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Local development overrides / personal settings
+local_settings.py
+dev.db
+dev.sqlite3
+*.local.*
+
+# Dependency directories (if you use pipenv/poetry and commit lockfiles separately)
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# Optional: ignore large media uploads in development
+media/uploads/*
+!media/uploads/.gitkeep
+
+# Celery beat schedule database
+celerybeat-schedule
+celerybeat.pid
+
+# Sentry
+.sentryclirc
+
+# django-compressor
+CACHE/
+
+# django-debug-toolbar & silk
+*.sqlite-journal
+
+# Django migrations backups (very common pattern)
+migrations_old/
+migrations_backup/
+
+# Ruff / black / isort cache
+.ruff_cache/
+.black_cache/
+.isort.cfg  # ← only if you don't want to commit it
+
+# Pre-commit hooks
+.pre-commit-config.yaml   # ← remove this line if you **want** to commit pre-commit config
+
+# Logger
+server_output.txt
+test_sentry.py
+
+# Documents
+docs/
+
+# DOCKER
+Dockerfile
+
