@@ -63,6 +63,9 @@ INSTALLED_APPS = [
 
     # Local
     "apps.accounts",
+    "apps.ambulances",
+    "apps.bookings",
+    "apps.hospitals",
 ]
 
 # -------------------------------------------------------------------------------
@@ -318,7 +321,7 @@ EMAIL_TIMEOUT       = 10               # seconds — avoids hanging requests on 
 
 REDIS_URL = config("REDIS_URL", default="redis://127.0.0.1:6379/0")
 
-# ── Django Channels ───────────────────────────────────────────────────────────
+#  Django Channels 
 
 CHANNEL_LAYERS = {
     "default": {
@@ -327,7 +330,7 @@ CHANNEL_LAYERS = {
     },
 }
 
-# ── Celery ────────────────────────────────────────────────────────────────────
+#  Celery 
 
 CELERY_BROKER_URL                 = REDIS_URL
 CELERY_RESULT_BACKEND             = REDIS_URL

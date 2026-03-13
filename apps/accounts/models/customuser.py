@@ -36,7 +36,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         db_table = "custom_user"
-        ordering = ["-created_at"]
+        ordering = ["created_at"]
         verbose_name = "user"
         verbose_name_plural = "users"
 
@@ -75,9 +75,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def is_provider_admin(self):
         return self.role == AccountType.PROVIDER_ADMIN
 
-    # -------------------------
     # Friendly email validation
-    # -------------------------
     def clean(self):
         super().clean()
         if self.email:

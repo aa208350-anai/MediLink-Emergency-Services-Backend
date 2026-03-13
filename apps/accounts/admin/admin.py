@@ -13,11 +13,7 @@ from apps.accounts.models.profile import (
     StaffProfile,
 )
 
-
-# =====================================================
 # PROFILE INLINES
-# =====================================================
-
 class ClientProfileInline(admin.StackedInline):
     model = ClientProfile
     can_delete = False
@@ -82,11 +78,7 @@ class AdminProfileInline(admin.StackedInline):
     )
     extra = 0
 
-
-# =====================================================
 # ROLE → INLINE MAPPING
-# =====================================================
-
 ROLE_INLINE_MAP = {
     "client":        ClientProfileInline,
     "driver":        DriverProfileInline,
@@ -95,11 +87,7 @@ ROLE_INLINE_MAP = {
     "admin":         AdminProfileInline,
 }
 
-
-# =====================================================
 # CUSTOM USER ADMIN
-# =====================================================
-
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     list_display  = ("email", "full_name", "role", "is_active", "is_staff", "created_at")
@@ -134,11 +122,7 @@ class CustomUserAdmin(UserAdmin):
         return obj.get_full_name_or_email()
     full_name.short_description = "Full Name"
 
-
-# =====================================================
 # STANDALONE PROFILE ADMINS
-# =====================================================
-
 @admin.register(DriverProfile)
 class DriverProfileAdmin(admin.ModelAdmin):
     list_display  = ("user", "license_number", "vehicle_plate", "is_available", "is_verified", "average_rating")

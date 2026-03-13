@@ -14,18 +14,18 @@ def _default_expires():
 
 
 def _generate_otp():
-    """6-digit numeric OTP."""
+    """6digit numeric OTP."""
     return "".join(random.choices(string.digits, k=6))
 
 
 def _generate_token():
-    """URL-safe token for magic-link verification."""
+    """URLsafe token for magiclink verification."""
     return uuid.uuid4().hex
 
 
 class EmailVerification(models.Model):
     """
-    Stores a one-time verification code (OTP) and a magic-link token
+    Stores a onetime verification code (OTP) and a magiclink token
     for a given user email.  Only one active record per user at a time
     — old ones are deleted on issue.
     """
@@ -43,7 +43,7 @@ class EmailVerification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ["created_at"]
         verbose_name = "Email Verification"
 
     def __str__(self):
@@ -61,7 +61,7 @@ class EmailVerification(models.Model):
         """Mark as used and activate the user's email."""
         self.is_used = True
         self.save(update_fields=["is_used"])
-        # Mark the user's account as email-verified
+        # Mark the user's account as emailverified
         user = self.user
         user.is_active = True
         user.save(update_fields=["is_active"])

@@ -7,11 +7,7 @@ from django.utils import timezone
 from django.core.validators import RegexValidator
 from cloudinary.models import CloudinaryField
 
-
-# =====================================================
 # SHARED MIXINS
-# =====================================================
-
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(default=timezone.now, editable=False, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -61,11 +57,7 @@ class BaseProfile(TimeStampedModel):
     def __str__(self):
         return self.user.get_full_name_or_email()
 
-
-# =====================================================
 # CLIENT PROFILE
-# =====================================================
-
 class ClientProfile(BaseProfile):
     """Profile for end-users who book rides/services."""
 
@@ -84,10 +76,8 @@ class ClientProfile(BaseProfile):
         verbose_name = "client profile"
 
 
-# =====================================================
-# DRIVER PROFILE
-# =====================================================
 
+# DRIVER PROFILE
 class DriverProfile(BaseProfile, VerificationMixin):
     """Profile for drivers who fulfil service requests."""
 
@@ -128,11 +118,7 @@ class DriverProfile(BaseProfile, VerificationMixin):
             models.Index(fields=["average_rating"]),
         ]
 
-
-# =====================================================
 # STAFF PROFILE
-# =====================================================
-
 class StaffProfile(BaseProfile):
     """Profile for internal staff / operators."""
 
@@ -150,11 +136,7 @@ class StaffProfile(BaseProfile):
     class Meta:
         verbose_name = "staff profile"
 
-
-# =====================================================
 # PROVIDER ADMIN PROFILE
-# =====================================================
-
 class ProviderAdminProfile(BaseProfile, VerificationMixin):
     """Profile for the admin of a service-provider organisation."""
 
@@ -191,11 +173,7 @@ class ProviderAdminProfile(BaseProfile, VerificationMixin):
             models.Index(fields=["average_rating"]),
         ]
 
-
-# =====================================================
 # ADMIN PROFILE
-# =====================================================
-
 class AdminProfile(BaseProfile):
     """Profile for platform super-admins."""
 

@@ -11,89 +11,99 @@ User = get_user_model()
 class RegistrationService:
     """
     Handles all user creation and role-upgrade flows atomically.
+    Email verification is disabled — accounts are active immediately.
     """
 
-    # ------------------------------------------------------------------
-    # Public: new account creation
-    # ------------------------------------------------------------------
+    # Public: new account creation (open registration)
 
     @staticmethod
     @transaction.atomic
     def register_client(*, email, first_name, last_name, password, phone=None, **_ignored):
         """
-        Create a CLIENT account (inactive until email verified).
+        Create a CLIENT account (active immediately — email verification disabled).
         """
+        from apps.accounts.models.profile import ClientProfile
+
         user = User.objects.create_client(
             email=email,
             first_name=first_name,
             last_name=last_name,
             password=password,
-            is_active=False,
+            is_active=True,
         )
 
+        profile = ClientProfile.objects.create(user=user)
+
         if phone:
-            profile = user.client_profile
             profile.phone = phone
             profile.save(update_fields=["phone"])
 
-        RegistrationService._send_verification(user)
         return user
 
     @staticmethod
     @transaction.atomic
     def register_driver(*, email, first_name, last_name, password, phone=None, **profile_fields):
         """
-        Create a DRIVER account (inactive until email verified).
+        Create a DRIVER account (active immediately — email verification disabled).
         """
+        from apps.accounts.models.profile import DriverProfile
+
         user = User.objects.create_driver(
             email=email,
             first_name=first_name,
             last_name=last_name,
             password=password,
-            is_active=False,
+            is_active=True,
         )
 
-        profile = user.driver_profile
+        profile = DriverProfile.objects.create(user=user)
+
         if phone:
             profile.phone = phone
+            profile.whatsapp_number = phone
+
         for field, value in profile_fields.items():
             if hasattr(profile, field):
                 setattr(profile, field, value)
+
         profile.save()
 
-        RegistrationService._send_verification(user)
         return user
 
     @staticmethod
     @transaction.atomic
     def register_provider_admin(*, email, first_name, last_name, password, phone=None, **profile_fields):
         """
-        Create a PROVIDER ADMIN account (inactive until email verified).
+        Create a PROVIDER ADMIN account (active immediately — email verification disabled).
         """
+        from apps.accounts.models.profile import ProviderAdminProfile
+
         user = User.objects.create_user(
             email=email,
             first_name=first_name,
             last_name=last_name,
             password=password,
             role=AccountType.PROVIDER_ADMIN,
-            is_active=False,
+            is_active=True,
         )
 
-        profile = user.provider_admin_profile
+        profile = ProviderAdminProfile.objects.create(user=user)
+
         if phone:
             profile.phone = phone
+            profile.whatsapp_number = phone
+
         for field, value in profile_fields.items():
             if hasattr(profile, field):
                 setattr(profile, field, value)
+
         profile.save()
 
-        RegistrationService._send_verification(user)
         return user
 
-    # ------------------------------------------------------------------
+    
     # Public: role upgrades (authenticated user only)
-    # ------------------------------------------------------------------
-
+    
     @staticmethod
     @transaction.atomic
     def upgrade_to_driver(*, user, phone=None, **profile_fields):
@@ -141,22 +151,3 @@ class RegistrationService:
         ClientProfile.objects.filter(user=user).delete()
         StaffProfile.objects.filter(user=user).delete()
         return user
-
-    # ------------------------------------------------------------------
-    # Internal helpers
-    # ------------------------------------------------------------------
-
-    @staticmethod
-    def _send_verification(user):
-        """
-        Clear stale OTPs, create a fresh verification, and send the email.
-        """
-        from apps.accounts.models.email_verification import EmailVerification
-        from apps.accounts.services.email_verification import send_verification_email
-
-        EmailVerification.objects.filter(user=user, is_used=False).delete()
-        verification = EmailVerification.objects.create(
-            user=user,
-            email=user.email,
-        )
-        send_verification_email(user, verification.otp, verification.token)
